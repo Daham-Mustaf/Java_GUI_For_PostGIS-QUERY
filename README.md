@@ -268,5 +268,37 @@ static JTextArea sql = new JTextArea();
 ```
 ### result  <a name="re"></a>
 when we run the program it shows the palce to enter the information to get the connection with data base:
-![Alt text](/Users/m-store/Desktop/Screen Shot 2021-09-18 at 9.43.29 PM.png "Title")
+<img width="317" alt="Screen Shot 2021-09-18 at 9 43 29 PM" src="https://user-images.githubusercontent.com/73963764/133906945-033b673b-840f-48e1-9c92-ef9711dcbe8d.png">
+
+after entring the requred information the new window will be opened as follow:
+
+<img width="800" alt="Screen Shot 2021-09-18 at 9 53 56 PM" src="https://user-images.githubusercontent.com/73963764/133906994-da94bf5a-7785-4e29-8056-5dea9f53947d.png">
+
+excute some quries as follwo:
+```j
+CREATE DATABASE test;
+```
+CREATE a table: 
+```j
+CREATE TABLE point
+   (
+     x float8,
+     y float8,
+     place varchar(100),
+     size float8,
+     update date,
+     startdate date,
+     enddate date,
+     title varchar(255),
+     url varchar(255),
+     the_geom geometry(POINT, 4326)
+);
+```
+- quiry on data:
+<img width="799" alt="Screen Shot 2021-09-18 at 10 01 10 PM" src="https://user-images.githubusercontent.com/73963764/133907200-089b8548-862a-45fe-91d5-9339fb85dc0c.png">
+
+
+
+
+
 
