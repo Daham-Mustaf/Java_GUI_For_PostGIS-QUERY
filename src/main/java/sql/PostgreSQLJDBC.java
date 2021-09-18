@@ -13,16 +13,18 @@ import javax.swing.table.DefaultTableModel;
 public class PostgreSQLJDBC extends JPanel {
 
 	static JTextArea sql = new JTextArea();
-	JLabel promt = new JLabel("Type your PostgreSQL statment below:");
+	JLabel promt = new JLabel("Type your PostgreSQL statement below:");
 	JButton exe = new JButton("Excute");
 	JButton reset = new JButton("Reset");
 	static JTable table = new JTable();
+	//an implementation of TableModel that uses a Vector of Vectors to store the cell value objects.
 	static DefaultTableModel model = (DefaultTableModel) table.getModel();
 	static Connector dc;
 
 	public PostgreSQLJDBC(Connector conn) {
 		add(promt);
 		dc = conn;
+		//JScrollPane manages a viewport, optional vertical and horizontal scroll bars, and optional row and column heading viewports.
 		JScrollPane spane = new JScrollPane(sql);
 		spane.setPreferredSize((new Dimension(750, 100)));
 		add(spane);

@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 public class ConnectDialog extends JDialog implements ActionListener {
 
 	boolean iscancelled = true;
+	// create labels for host,port, databasename,user name and password
 	JLabel lhost = new JLabel("Host Name");
 	JTextField host = new JTextField();
 	JLabel lport = new JLabel("Port");
