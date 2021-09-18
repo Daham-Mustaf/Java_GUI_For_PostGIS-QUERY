@@ -7,6 +7,7 @@
 - [`Connector`:](#conn)
 - [`ConnectDialog`:](#dial)
 - [`PostgreSQLJDBC`:](#post)
+3. [the result of excuting PostGIS query:](#re)
 
 
 
@@ -52,6 +53,9 @@ public class Connector {
 	/*
 	*connect to postgresql
 	 */
+	//Try to make a database connection to the given URL. The driver should return "null" if it realizes it is the wrong
+	// kind of driver to connect to the given URL. This will be common, as when the JDBC driverManager is asked to connect to a given URL,
+	// it passes the URL to each loaded driver in turn.
 
 	static String url, database, username, password, hostname, port, driver;
 
@@ -107,6 +111,194 @@ public class Connector {
 }
 ```
 
-## Tha main purpose of the project: <a name="dial"></a>
-## Tha main purpose of the project: <a name="post"></a>
+## `ConnectDialog`: <a name="dial"></a>
+
+```java
+
+boolean iscancelled = true;
+	// create labels for host,port, databasename,user name and password
+	JLabel lhost = new JLabel("Host Name");
+	JTextField host = new JTextField();
+	JLabel lport = new JLabel("Port");
+	JTextField port = new JTextField();
+	JLabel ldatabase = new JLabel("Database");
+	JTextField database = new JTextField();
+	JLabel lusr = new JLabel("User Name");
+	JTextField user = new JTextField();
+	JLabel lpass = new JLabel("User Name");
+	JPasswordField pass = new JPasswordField();
+
+	// add Buttons
+	JButton ok = new JButton("Ok");
+	JButton cancel = new JButton("cancel");
+
+	// Properties object
+	Properties props;
+
+	public ConnectDialog(JFrame owner, String title, Properties p) {
+		super(owner, title, true);
+		setSize(300, 200);
+		setLocation(250, 200);
+		props = new Properties(p);
+		ok.setPreferredSize(new Dimension(75, 25));
+		ok.addActionListener(this);
+		cancel.setPreferredSize(new Dimension(75, 25));
+		cancel.addActionListener(this);
+		JPanel cpanal = new JPanel();
+		JPanel cpanal2 = new JPanel();
+
+		// add grid
+		cpanal.setLayout(new GridLayout(5, 2));
+		cpanal.add(lhost);
+		cpanal.add(host);
+		cpanal.add(lport);
+		cpanal.add(port);
+		cpanal.add(ldatabase);
+		cpanal.add(database);
+		cpanal.add(lusr);
+		cpanal.add(user);
+		cpanal.add(lpass);
+		cpanal.add(pass);
+
+		// add to sacond panal
+		cpanal2.add(ok);
+		cpanal2.add(cancel);
+
+		add(cpanal, BorderLayout.NORTH);
+		add(cpanal2, BorderLayout.SOUTH);
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == ok)
+			iscancelled = false;
+		this.dispose();
+
+	}
+
+	public Properties getPros() {
+		props.setProperty("Database", database.getText());
+		props.setProperty("Host_Name", host.getText());
+		props.setProperty("Port", port.getText());
+		props.setProperty("User_Name", user.getText());
+		return props;
+	}
+}
+```
+
+## `PostgreSQLJDBC`: <a name="post"></a>
+
+```java
+static JTextArea sql = new JTextArea();
+	JLabel promt = new JLabel("Type your PostgreSQL statement below:");
+	JButton exe = new JButton("Excute");
+	JButton reset = new JButton("Reset");
+	static JTable table = new JTable();
+	//an implementation of TableModel that uses a Vector of Vectors to store the cell value objects.
+	static DefaultTableModel model = (DefaultTableModel) table.getModel();
+	static Connector dc;
+
+	public PostgreSQLJDBC(Connector conn) {
+		add(promt);
+		dc = conn;
+		//JScrollPane manages a viewport, optional vertical and horizontal scroll bars, and optional row and column heading viewports. 
+		JScrollPane spane = new JScrollPane(sql);
+		spane.setPreferredSize((new Dimension(750, 100)));
+		add(spane);
+		exe.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				excute();
+
+			}
+		});
+		reset.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				model.setColumnCount(0);
+				model.setRowCount(0);
+			}
+		});
+		add(exe);
+		add(reset);
+
+		// add(table);
+		JScrollPane rspan = new JScrollPane(table);
+		rspan.setPreferredSize((new Dimension(750, 100)));
+		add(rspan);
+
+	}
+
+	private static void excute() {
+		model.setColumnCount(0);
+		model.setRowCount(0);
+		String s = sql.getText();
+
+		try {
+			if (s.length() >= 6 && s.substring(0, 6).equalsIgnoreCase("SELECT")) {
+				ResultSet rs = dc.excuteQury(s);
+				ResultSetMetaData rsmd = rs.getMetaData();
+				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+					model.addColumn(rsmd.getColumnName(i));
+
+				}
+				while (rs.next()) {
+					String[] data = new String[rsmd.getColumnCount()];
+					for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+						data[i - 1] = rs.getString(i);
+					}
+					model.addRow(data);
+				}
+
+			} else
+				dc.executeUpdate(s);
+		} catch (SQLException e) {
+			System.out.println("Error: " + e);
+
+		}
+
+	}
+}
+```
+### result  <a name="re"></a>
+when we run the program it shows the palce to enter the information to get the connection with data base:
+<img width="317" alt="Screen Shot 2021-09-18 at 9 43 29 PM" src="https://user-images.githubusercontent.com/73963764/133906945-033b673b-840f-48e1-9c92-ef9711dcbe8d.png">
+
+after entring the requred information the new window will be opened as follow:
+
+<img width="800" alt="Screen Shot 2021-09-18 at 9 53 56 PM" src="https://user-images.githubusercontent.com/73963764/133906994-da94bf5a-7785-4e29-8056-5dea9f53947d.png">
+
+excute some quries:
+```j
+CREATE DATABASE test;
+```
+CREATE a table: 
+```j
+CREATE TABLE point
+   (
+     x float8,
+     y float8,
+     place varchar(100),
+     size float8,
+     update date,
+     startdate date,
+     enddate date,
+     title varchar(255),
+     url varchar(255),
+     the_geom geometry(POINT, 4326)
+);
+```
+- quiry on data:
+<img width="799" alt="Screen Shot 2021-09-18 at 10 01 10 PM" src="https://user-images.githubusercontent.com/73963764/133907200-089b8548-862a-45fe-91d5-9339fb85dc0c.png">
+
+
+
+
+
 
