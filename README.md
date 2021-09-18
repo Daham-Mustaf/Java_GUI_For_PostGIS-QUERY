@@ -274,7 +274,7 @@ after entring the requred information the new window will be opened as follow:
 
 <img width="800" alt="Screen Shot 2021-09-18 at 9 53 56 PM" src="https://user-images.githubusercontent.com/73963764/133906994-da94bf5a-7785-4e29-8056-5dea9f53947d.png">
 
-excute some quries as follwo:
+excute some quries:
 ```j
 CREATE DATABASE test;
 ```
