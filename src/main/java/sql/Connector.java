@@ -10,6 +10,12 @@ import java.util.Properties;
 public class Connector {
 	Connection conn;
 	Statement stat;
+	/*
+	*connect to postgresql
+	 */
+	//Try to make a database connection to the given URL. The driver should return "null" if it realizes it is the wrong
+	// kind of driver to connect to the given URL. This will be common, as when the JDBC driverManager is asked to connect to a given URL,
+	// it passes the URL to each loaded driver in turn.
 
 	static String url, database, username, password, hostname, port, driver;
 
