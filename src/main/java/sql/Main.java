@@ -7,8 +7,9 @@ import javax.swing.JFrame;
 public class Main {
 
 	public static void main(String[] args) {
-
+     //Creates a JFrame with the specified title and the specified GraphicsConfiguration of a screen.
 		JFrame frame = new JFrame("PostGIS QUERY ");
+
 		Properties props = new Properties();
 		ConnectDialog dialog = new ConnectDialog(frame, "Database Connectro", props);
 		dialog.setVisible(true);
