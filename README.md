@@ -189,6 +189,17 @@ boolean iscancelled = true;
 ```
 
 ## `PostgreSQLJDBC`: <a name="post"></a>
+¡– Download PostgreSQL JDBC driver.
+JDBC database URL for PostgreSQL
+The syntax of database URL for PostgreSQL looks like the following forms:
+jdbc:postgresql:database
+jdbc:postgresql://host/database
+jdbc:postgresql://host:port/database
+jdbc:postgresql://host:port/database?param1=value1&param2=value2&…
+
+j- Register JDBC driver for PostgreSQL Server and create connection
+
+ 
 
 ```java
 static JTextArea sql = new JTextArea();
